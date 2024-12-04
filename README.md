@@ -1,0 +1,1 @@
+# Qoriqxonalar_location
