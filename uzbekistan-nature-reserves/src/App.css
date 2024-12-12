@@ -1,0 +1,166 @@
+/* Umumiy uslublar */
+body {
+  font-family: "Arial", sans-serif;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #d4edda, #a8df8e);
+  color: #2c3e50;
+  animation: fadeIn 2s ease-in;
+}
+
+h2 {
+  font-size: 1.5rem;
+  text-align: center;
+  margin: 1rem 0;
+  animation: slideInFromTop 1s ease-out;
+}
+
+p {
+  font-size: 1rem;
+  line-height: 1.5;
+  text-align: center;
+  color: #2c3e50;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  margin: 0.5rem 0;
+  font-size: 1rem;
+}
+
+/* Mobil uchun uslublar */
+@media only screen and (max-width: 768px) {
+  body {
+    font-size: 16px;
+    padding: 10px;
+  }
+
+  .HeaderP {
+    font-size: 1.4rem;
+    padding: 10px;
+    background-color: #28a745;
+    color: #fff;
+    border-radius: 10px;
+    animation: fadeIn 1.5s ease-in;
+  }
+
+  .form-select {
+    font-size: 1rem;
+    padding: 0.5rem;
+    margin: 1rem 0;
+    border: 1px solid #28a745;
+    border-radius: 5px;
+    background: #d4edda;
+    color: #2c3e50;
+    animation: fadeIn 1.5s ease-in;
+  }
+
+  .maps {
+    height: 300px;
+    width: 100%;
+    margin-top: 1rem;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    animation: zoomIn 1s ease-out;
+  }
+
+  .card {
+    border: 1px solid #28a745;
+    border-radius: 10px;
+    background: #ffffff;
+    margin-top: 1rem;
+    padding: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 1.5s ease-in;
+  }
+
+  .card-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #28a745;
+  }
+
+  .card-subtitle {
+    font-size: 1rem;
+    color: #2c3e50;
+  }
+
+  .hududUl {
+    padding: 0;
+    margin: 1rem 0;
+    text-align: left;
+  }
+
+  .hududUl li {
+    background: #d4edda;
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    animation: slideInFromLeft 1s ease-out;
+  }
+
+  select {
+    width: 100%;
+  }
+
+  a {
+    color: #28a745;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
+  }
+
+  a:hover {
+    text-decoration: underline;
+    color: #218838;
+  }
+}
+
+/* Animatsiyalar */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInFromTop {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInFromLeft {
+  from {
+    transform: translateX(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

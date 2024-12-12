@@ -1,10 +1,9 @@
-import { useState } from "react"; // React'dan faqat kerakli hook'larni import qildim
-import { Link, NavLink } from "react-router-dom";
-import "./App.css";
-import { Container, Row, Col, Card, Button } from "react-bootstrap";
-import { MapContainer, TileLayer, Marker, Popup, Polygon } from "react-leaflet";
+import { useState, useEffect } from "react";
+import { Container, Row, Col, Card } from "react-bootstrap";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 
 import "leaflet/dist/leaflet.css";
+import "../src/App.css";
 
 // Qo'riqxonalar va tabiiy hududlar ma'lumotlari
 const parks = [
@@ -48,6 +47,15 @@ const parks = [
     lat: 37.8,
     lon: 67.5,
   },
+  
+  {
+    id: 6,
+    name: "Hisor davlat qo‘riqxonasi ",
+    description: "https://eco.gov.uz/en/site/news?id=2040",
+    region: "Qashqadaryo viloyati",
+    lat:38.4750,
+    lon: 67.1530,
+  },
 ];
 
 // Haversine formula
@@ -67,10 +75,13 @@ const haversineDistance = (lat1, lon1, lat2, lon2) => {
 
 function App() {
   const [selectedPark, setSelectedPark] = useState(null);
-  const [userLocation, setUserLocation] = useState({ lat: 0, lon: 0 });
+  const [userLocation, setUserLocation] = useState({
+    lat: 41.2995,
+    lon: 69.2401,
+  }); // Default Toshkent koordinatalari
   const [distances, setDistances] = useState([]);
 
-  useState(() => {
+  useEffect(() => {
     // Geolokatsiyani olish
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -85,20 +96,18 @@ function App() {
     }
   }, []);
 
-  useState(() => {
+  useEffect(() => {
     // Har bir qo'riqxonaga bo'lgan masofani hisoblash
-    if (userLocation.lat !== 0 && userLocation.lon !== 0) {
-      const distances = parks.map((park) => {
-        const distance = haversineDistance(
-          userLocation.lat,
-          userLocation.lon,
-          park.lat,
-          park.lon
-        );
-        return { name: park.name, distance: distance.toFixed(2) };
-      });
-      setDistances(distances);
-    }
+    const calculatedDistances = parks.map((park) => {
+      const distance = haversineDistance(
+        userLocation.lat,
+        userLocation.lon,
+        park.lat,
+        park.lon
+      );
+      return { name: park.name, distance: distance.toFixed(2) };
+    });
+    setDistances(calculatedDistances);
   }, [userLocation]);
 
   return (
@@ -106,14 +115,12 @@ function App() {
       <Container className="mt-4">
         <Row>
           <Col md={4}>
-            <h2>O‘zbekistonning Muhoafaza Qilingan Hududlari</h2>
+            <h2 className="HeaderP">
+              O‘zbekistonning Muhoafaza Qilingan Hududlari
+            </h2>
             <p>
-              Hozirgi joylashuvingiz:{" "}
-              {userLocation.lat
-                ? `${userLocation.lat.toFixed(2)}, ${userLocation.lon.toFixed(
-                    2
-                  )}`
-                : "Yuklanmoqda..."}
+              Hozirgi joylashuvingiz: {userLocation.lat.toFixed(2)},{" "}
+              {userLocation.lon.toFixed(2)}
             </p>
 
             <select
@@ -137,22 +144,28 @@ function App() {
                 <Card.Body>
                   <Card.Title>{selectedPark.name}</Card.Title>
                   <Card.Subtitle className="mb-2 text-muted">
-                    {selectedPark.region}
+                    {selectedPark.region}.
+                  </Card.Subtitle>
+                  <Card.Subtitle className="mb-2 text-muted">
+                    lat:{selectedPark.lat}° N <br />
+                    lon:{selectedPark.lon}° E
                   </Card.Subtitle>
                   <a
                     href={selectedPark.description}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    {selectedPark.description}
+                    Batafsil ma'lumot
                   </a>
                 </Card.Body>
               </Card>
             )}
 
             <div>
-              <h5>Har bir qo'riqxonaga bo'lgan masofa:</h5>
-              <ul>
+              <h5>
+                Siz turgan hududdan har bir qo'riqxonagacha bo'lgan masofa:
+              </h5>
+              <ul className="hududUl">
                 {distances.map((dist, index) => (
                   <li key={index}>
                     {dist.name}: {dist.distance} km
@@ -164,12 +177,9 @@ function App() {
 
           <Col md={8}>
             <MapContainer
-              center={[
-                userLocation.lat || 41.2995,
-                userLocation.lon || 69.2401,
-              ]}
+              center={[userLocation.lat, userLocation.lon]}
               zoom={6}
-              style={{ height: "500px", width: "100%" }}
+              className="maps"
             >
               <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -179,7 +189,14 @@ function App() {
                 <Marker position={[selectedPark.lat, selectedPark.lon]}>
                   <Popup>
                     <strong>{selectedPark.name}</strong>
-                    <p>{selectedPark.description}</p>
+                    <br />
+                    <a
+                      href={selectedPark.description}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Batafsil ma'lumot
+                    </a>
                   </Popup>
                 </Marker>
               )}
